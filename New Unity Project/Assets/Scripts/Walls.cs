@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Wall : MonoBehaviour
+public class Walls : MonoBehaviour
 {
 
 	public Sprite dmgSprite;
@@ -22,14 +22,8 @@ public class Wall : MonoBehaviour
 	public void DamageWall (int loss)
 	{
 		
-
-
 		spriteRenderer.sprite = dmgSprite;
-
-
-		hp -= loss;
-
-
+		hp -= loss; 
 		if(hp <= 0)
 			
 			gameObject.SetActive (false);
