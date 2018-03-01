@@ -45,7 +45,7 @@ public class Player : MovingObject
 
 		if(horizontal != 0 || vertical != 0)
 		{
-			AttemptMove<Wall> (horizontal, vertical);
+			AttemptMove<Walls> (horizontal, vertical);
 		}
 	}
 		
@@ -66,8 +66,10 @@ public class Player : MovingObject
 		
 	protected override void OnCantMove <T> (T component)
 	{
-		Wall.hitWall = component as Wall;
-		hitWall.DamageWall (wallDamage);
+		Walls hitWall = component as Walls;
+
+		hitWall.DamageWall(wallDamage);
+
 		animator.SetTrigger ("playerChop");
 	}
 		
