@@ -70,7 +70,7 @@ public class Player : MovingObject
 
 		hitWall.DamageWall(wallDamage);
 
-		animator.SetTrigger ("playerChop");
+		animator.SetTrigger ("PlayerChop");
 	}
 		
 	private void OnTriggerEnter2D (Collider2D other)
@@ -101,7 +101,7 @@ public class Player : MovingObject
 
 		public void LoseFood (int loss)
 	{
-		animator.SetTrigger ("playerHit");
+		animator.SetTrigger ("PlayerHit");
 		food -= loss;
 		CheckIfGameOver ();
 	}

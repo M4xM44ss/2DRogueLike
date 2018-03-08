@@ -20,9 +20,9 @@ public class GameManager : MonoBehaviour
 		if (instance == null)
 			instance = this;
 		else if (instance != this)
-		Destroy(gameObject);    
-		enemies = new List<Enemy>();
+			Destroy(gameObject);
 		DontDestroyOnLoad(gameObject);
+		enemies = new List<Enemy>();
 		boardScript = GetComponent<BoardManager>();
 		InitGame();
 	}
@@ -42,28 +42,28 @@ public class GameManager : MonoBehaviour
 		if (playersTurn || enemiesMoving)
 			return;
 
-		StartCoroutine (MoveEnemies ());
+		StartCoroutine(MoveEnemies ());
 	}
 
 	public void AddEnemyToList(Enemy Script)
 	{
-		enemies.Add (script);
+		enemies.Add (Script);
 	}
 		
 	IEnumerator MoveEnemies()
 	{
 		enemiesMoving = true;
 		yield return new WaitForSeconds (turnDelay);
-		if (enemies.Count == 0)
-	{
-		yield return new WaitForSeconds(turnDelay);
-	}
+		if (enemies.Count == 0) {
+			yield return new WaitForSeconds (turnDelay);
+		}
 
 		for (int i = 0; i < enemies.Count; i++) {
 			enemies [i].MoveEnemy ();
+			yield return new WaitForSeconds (enemies [i].moveTime); 
 		}
-		yield return new WaitForSeconds(enemies[i].moveTime); 
-	}
+			
 		playersTurn = true;
 		enemiesMoving = false;
-}
+		}
+	}
