@@ -1,18 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using  UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+	public float levelStartDelay = 2f;
 	public float turnDelay = .1f;
 	public static GameManager instance = null;   
 	private BoardManager boardScript;
 	public int playerFoodPoints = 100;
 	[HideInInspector] public bool playersTurn = true;
 
-	private int level = 3;
+	private Text levelText;
+	private GameObject levelImage;
+	private int level = 1;
 	private List<Enemy> enemies;
 	private bool enemiesMoving;
+	private bool doingSetup;
 
 	// Use this for initialization
 	void Awake()
@@ -26,22 +32,37 @@ public class GameManager : MonoBehaviour
 		boardScript = GetComponent<BoardManager>();
 		InitGame();
 	}
+
 	void InitGame()
 	{
+		doingSetup = true;
+
+		levelImage = GameObject.Find ("LevelImage");
+		levelText = GameObject.Find ("LevelText").GetComponent<Text> ();
+		levelText.text = "Day " + level;
+		levelImage.SetActive (true);
+		Invoke ("HideLevelImage", levelStartDelay);
+
 		enemies.Clear ();
 		boardScript.SetupScene(level);
+	}
+	private void HideLevelImage()
+	{
+		levelImage.SetActive (false);
+		doingSetup = false;
 	}
 
 	public void GameOver()
 	{
+		levelText.text = "After " + level + "days, you starved.";
+			levelImage.SetActive(true);
 		enabled = false;
 	}
 		
 	void Update()
 	{
-		if (playersTurn || enemiesMoving)
+			if (playersTurn || enemiesMoving || doingSetup)
 			return;
-
 		StartCoroutine(MoveEnemies ());
 	}
 
@@ -65,5 +86,16 @@ public class GameManager : MonoBehaviour
 			
 		playersTurn = true;
 		enemiesMoving = false;
-		}
 	}
+
+	void OnlevelFinishedLoading(Scene scene, LoadSceneMode mode)
+	{
+		level++;
+		InitGame ();
+	}
+
+	void OnEnable()
+	{
+		SceneManager.sceneLoaded -= OnlevelFinishedLoading;
+	}
+}
