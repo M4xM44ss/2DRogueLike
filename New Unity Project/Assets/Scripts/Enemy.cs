@@ -4,11 +4,11 @@ using System.Collections;
 public class Enemy : MovingObject
 {
 	public int playerDamage;
-
-
 	private Animator animator;
 	private Transform target;
 	private bool skipMove;
+	public AudioClip enemyAttack1;
+	public AudioClip enemyAttack2;
 
 	protected override void Start ()
 	{
@@ -53,6 +53,8 @@ public class Enemy : MovingObject
 		Player hitPlayer = component as Player;
 		hitPlayer.LoseFood (playerDamage);
 		animator.SetTrigger ("EnemyAttack");
+
+		SoundManager.instance.RandomizeSfx (enemyAttack1, enemyAttack2);
 
 	}
 }
